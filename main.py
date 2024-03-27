@@ -2,6 +2,29 @@ import mysql.connector
 import datetime
 # import config.py
 
+exitProgram = False
+
+
+
+def menu():
+    userChoice = input('Command: (c)reate, (r)ead, (u)pdate, (d)elete, e(x)it: ')
+    if (userChoice == 'c'):
+        create_data()
+    elif (userChoice == 'r'):
+        read_data()
+    elif (userChoice == 'u'):
+        update_data()
+    elif (userChoice == 'd'):
+        delete_data()
+    elif (userChoice == 'x'):
+        print('User quit')
+        db_connection.close()
+        global exitProgram
+        exitProgram = True
+    else:
+        print('Command not found')
+
+
 db_connection = mysql.connector.connect(host="localhost", user="root", password="thebigdog32", database="f1_db")
 
 # cursor to execute sql queries
@@ -56,6 +79,8 @@ def get_table_column_count(table_name):
     s_count = count[0][0]
     return s_count
 
+
+# get s count for the values in the insert statement
 def get_table_s_count(table_name):
     column_count = f'SELECT COUNT(*) FROM information_schema.columns WHERE table_name = "{table_name}";'
     cursor.execute(column_count)
@@ -70,11 +95,47 @@ def get_table_s_count(table_name):
             # print(f'%s')
             end_string += f"%s"
     return end_string
+
+def show_all_tables():
+    cursor.execute("SHOW TABLES")
+    tables = cursor.fetchall()
+    total = 0
+    tables_list = {}
+    # print("Tables Avaliable:")
+    for i in tables:
+        total += 1
+        print(f'{total}: {i[0]}')
+
+def user_table_selection():
+    show_all_tables()
+    user_input = int(input("Enter table to read/modify from: "))
+    if (user_input == 1):
+        table_name = "circuit"
+    elif(user_input == 2):
+        table_name = "driver"
+    elif(user_input == 3):
+        table_name = "race"
+    elif(user_input == 4):
+        table_name = "result"
+    elif(user_input == 5):
+        table_name = "season"
+    elif(user_input == 6):
+        table_name = "driver"
+    else:
+        print("table doesnt exist")
+    print(f'You chose *{table_name}*')
+    return table_name
+
 # End helper functions
 
 
 
-def create_data(table_name, data):
+def create_data():
+    # data = [
+    # (23, 'Michael Jordan', 'Australia', datetime.date(1959, 4, 17), 14),
+    # (24, 'Patrick Williams', 'Mexico', datetime.date(2002, 10, 9), 2)
+    # ]
+    table_name = user_table_selection()
     try:
         insert_statement = f'INSERT INTO {table_name} ({get_table_structure_for_insert(table_name)}) VALUES ({get_table_s_count(table_name)});'
         cursor.executemany(insert_statement, data)
@@ -83,7 +144,8 @@ def create_data(table_name, data):
     except Exception as err:
         print(err)
 
-def read_data(table_name):
+def read_data():
+    table_name = user_table_selection()
     read_table = f'SELECT * FROM {table_name}'
     cursor.execute(read_table)
     table_data = cursor.fetchall()
@@ -93,20 +155,20 @@ def read_data(table_name):
     print("*"*70)
 
 
-data = [
-    (21, 'Ja Morant', 'Germany', datetime.date(2000, 3, 15), 1),
-    (22, 'Miles Morales', 'France', datetime.date(1999, 5, 15), 7)
-    ]
+def update_data():
+    table_name = user_table_selection()
+    print(f"UPDATE {table_name} SET ")
+
+def delete_data():
+    table_name = user_table_selection()
+    print(f'DELETE FROM {table_name} WHERE id=2')
 
 
-# dataa = (16, 'John Cena', 'United States', datetime.date(2002, 7, 1), 15)
-# dataTest = [{
-#     'driver_id': 16,
-#     "name": "John Cena",
-#     "nationality": "United States",
-#     "birth_date": datetime.date(2002, 7, 1),
-#     "team_id": 15
-# }]
+
+
+
+# one_data_insert = (16, 'John Cena', 'United States', datetime.date(2002, 7, 1), 15)
+
 
 # get_table_structure("driver")
 # get_table_structure_for_insert('driver')
@@ -114,7 +176,11 @@ data = [
 
 # get_table_column_count("driver")
 
-read_data("driver")
+# read_data("driver")
 # read_data("team")
 # read_data("race")
-db_connection.close()
+
+# show_all_tables()
+
+while (exitProgram == False):
+    menu()
