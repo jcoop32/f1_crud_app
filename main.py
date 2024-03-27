@@ -36,11 +36,27 @@ def get_table_structure_for_insert(table_name):
     describe_table = f'DESCRIBE f1_db.{table_name}'
     cursor.execute(describe_table)
     structureFormat = cursor.fetchall()
-    for i in structureFormat:
-        return f'{i[0]},'
+    table_column_count = get_table_column_count(table_name)
+    end_string = ''
+    for i in range(0, table_column_count):
+        # return f'{i[0]},'
+        if i < table_column_count - 1:
+            # print(f'{structureFormat[i][0]}, ')
+            end_string += f'{structureFormat[i][0]}, '
+        else:
+            # print()
+            end_string += f'{structureFormat[i][0]}'
+    return end_string
 
 # used for insert functionality
 def get_table_column_count(table_name):
+    column_count = f'SELECT COUNT(*) FROM information_schema.columns WHERE table_name = "{table_name}";'
+    cursor.execute(column_count)
+    count = cursor.fetchall()
+    s_count = count[0][0]
+    return s_count
+
+def get_table_s_count(table_name):
     column_count = f'SELECT COUNT(*) FROM information_schema.columns WHERE table_name = "{table_name}";'
     cursor.execute(column_count)
     count = cursor.fetchall()
@@ -60,7 +76,7 @@ def get_table_column_count(table_name):
 
 def create_data(table_name, data):
     try:
-        insert_statement = f'INSERT INTO {table_name} (driver_id, name, nationality, birth_date, team_id) VALUES ({get_table_column_count(table_name)});'
+        insert_statement = f'INSERT INTO {table_name} ({get_table_structure_for_insert(table_name)}) VALUES ({get_table_s_count(table_name)});'
         cursor.executemany(insert_statement, data)
         db_connection.commit()
         print("Record succesfully added")
@@ -78,8 +94,8 @@ def read_data(table_name):
 
 
 data = [
-    (19, 'Anthony Davis', 'United States', datetime.date(1993, 3, 8), 9),
-    (20, 'Peter Parker', 'Bahamas', datetime.date(1953, 9, 16), 5)
+    (21, 'Ja Morant', 'Germany', datetime.date(2000, 3, 15), 1),
+    (22, 'Miles Morales', 'France', datetime.date(1999, 5, 15), 7)
     ]
 
 
@@ -94,11 +110,11 @@ data = [
 
 # get_table_structure("driver")
 # get_table_structure_for_insert('driver')
-create_data('driver', data=data)
+# create_data('driver', data=data)
 
 # get_table_column_count("driver")
 
-# read_data("driver")
+read_data("driver")
 # read_data("team")
 # read_data("race")
 db_connection.close()
