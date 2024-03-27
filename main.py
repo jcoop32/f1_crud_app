@@ -1,10 +1,17 @@
 import mysql.connector
 import datetime
+import os
+from dotenv import load_dotenv, dotenv_values
+
+load_dotenv()
 # import config.py
 
 exitProgram = False
 
+db_connection = mysql.connector.connect(host="localhost", user="root", password=os.getenv("pass"), database="f1_db")
 
+# cursor to execute sql queries
+cursor = db_connection.cursor()
 
 def menu():
     userChoice = input('Command: (c)reate, (r)ead, (u)pdate, (d)elete, e(x)it: ')
@@ -23,13 +30,6 @@ def menu():
         exitProgram = True
     else:
         print('Command not found')
-
-
-db_connection = mysql.connector.connect(host="localhost", user="root", password="thebigdog32", database="f1_db")
-
-# cursor to execute sql queries
-cursor = db_connection.cursor()
-
 
 # executing sql query
 # read_driver_table = "SELECT * FROM driver"
