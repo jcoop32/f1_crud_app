@@ -89,9 +89,26 @@ def user_table_selection():
         table_name = "season"
     elif(user_input == 6):
         table_name = "driver"
-    else:
+    elif (user_input > 1 or user_input < 6):
         print("table doesnt exist")
     print(f'You chose *{table_name}*')
     return table_name
 
+def get_table_record_count(table_name):
+    statement = f"SELECT COUNT(*) FROM {table_name}"
+    cursor.execute(statement)
+    count = cursor.fetchall()
+    return (int(count[0][0]))
+
+
+def read_table_param(table_name):
+    read_table = f'SELECT * FROM {table_name}'
+    cursor.execute(read_table)
+    table_data = cursor.fetchall()
+    print(f'{table_name} table:')
+    for i in table_data:
+        print(i)
+    print("*"*70)
+
 # End helper functions
+

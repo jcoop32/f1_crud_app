@@ -72,11 +72,27 @@ def read_data():
 
 def update_data():
     table_name = helper_functions.user_table_selection()
+    print("Here is the table you have chosen to update:")
+    read_data(table_name)
+
     print(f"UPDATE {table_name} SET ")
 
 def delete_data():
     table_name = helper_functions.user_table_selection()
-    print(f'DELETE FROM {table_name} WHERE id=2')
+    helper_functions.read_table_param(table_name)
+    table_record_count = helper_functions.get_table_record_count(table_name)
+    user_selection = int(input("Select ID from record to be deleted (first digit in row): "))
+    if (user_selection > table_record_count or user_selection < 1):
+        print("Record does not exist")
+    else:
+        try:
+            delete_statement = f'DELETE FROM {table_name} WHERE {table_name}_id={user_selection}'
+            cursor.execute(delete_statement)
+            db_connection.commit()
+            print("Record Deleted Successfully")
+        except Exception as err:
+            print(err)
+
 
 
 # ******** function tests ***********
