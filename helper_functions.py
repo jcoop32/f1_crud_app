@@ -11,6 +11,7 @@ db_connection = mysql.connector.connect(host="localhost", user="root", password=
 cursor = db_connection.cursor()
 # Helper Functions
 
+# shows the different coloumns for table in param
 def get_table_structure(table_name):
     # use decribe statement to retrieve structure
     describe_table = f'DESCRIBE f1_db.{table_name}'
@@ -63,6 +64,7 @@ def get_table_s_count(table_name):
             end_string += f"%s"
     return end_string
 
+# show all tables in db
 def show_all_tables():
     cursor.execute("SHOW TABLES")
     tables = cursor.fetchall()
@@ -73,6 +75,7 @@ def show_all_tables():
         total += 1
         print(f'{total}: {i[0]}')
 
+# function for users to select a table (used for each CRUD operation)
 def user_table_selection():
     show_all_tables()
     user_input = int(input("Enter table to read/modify from: "))
@@ -93,6 +96,7 @@ def user_table_selection():
     print(f'You chose *{table_name}*')
     return table_name
 
+# get table count to make sure user is in range for CRUD ops
 def get_table_record_count(table_name):
     statement = f"SELECT COUNT(*) FROM {table_name}"
     cursor.execute(statement)

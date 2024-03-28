@@ -6,13 +6,15 @@ from dotenv import load_dotenv, dotenv_values
 
 load_dotenv()
 
-exitProgram = False
+exit_program = False
 
+# connection to db
 db_connection = mysql.connector.connect(host="localhost", user="root", password=os.getenv("pass"), database="f1_db")
 
 # cursor to execute sql queries
 cursor = db_connection.cursor()
 
+# menu interface for user
 def menu():
     userChoice = input('Command: (c)reate, (r)ead, (u)pdate, (d)elete, e(x)it: ')
     if (userChoice == 'c'):
@@ -42,6 +44,8 @@ def menu():
 # cursor.close()
 # db_connection.close()
 
+
+#TODO: need a way to collect data from the user
 def create_data():
     data = [
     (23, 'Michael Jordan', 'Australia', datetime.date(1959, 4, 17), 14),
@@ -58,6 +62,7 @@ def create_data():
     except Exception as err:
         print(err)
 
+# this is complete
 def read_data():
     table_name = helper_functions.user_table_selection()
     read_table = f'SELECT * FROM {table_name}'
@@ -68,7 +73,7 @@ def read_data():
         print(i)
     print("*"*70)
 
-
+#TODO: figure out a way to understand which attributes a user wants to update
 def update_data():
     table_name = helper_functions.user_table_selection()
     print("Here is the table you have chosen to update:")
@@ -76,6 +81,7 @@ def update_data():
 
     print(f"UPDATE {table_name} SET ")
 
+# this is complete
 def delete_data():
     table_name = helper_functions.user_table_selection()
     helper_functions.read_table_param(table_name)
@@ -111,5 +117,6 @@ def delete_data():
 # show_all_tables()
 # ********* end function tests ********
 
-while (exitProgram == False):
+# loop for menu
+while (exit_program == False):
     menu()
