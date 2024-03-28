@@ -9,6 +9,7 @@ load_dotenv()
 exit_program = False
 
 # connection to db
+# may need to change params to connect to your local db
 db_connection = mysql.connector.connect(host="localhost", user="root", password=os.getenv("pass"), database="f1_db")
 
 # cursor to execute sql queries
