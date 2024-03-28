@@ -10,4 +10,4 @@
 
 May need to create `.env` file, then add `pass="YOUR MYSQL PASSWORD"`
 
-To run: `python3 main.py`
+`python3 main.py`
