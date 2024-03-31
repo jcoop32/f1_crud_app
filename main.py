@@ -29,8 +29,8 @@ def menu():
     elif (userChoice == 'x'):
         print('User quit')
         db_connection.close()
-        global exitProgram
-        exitProgram = True
+        global exit_program
+        exit_program = True
     else:
         print('Command not found')
 

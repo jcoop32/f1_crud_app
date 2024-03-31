@@ -17,9 +17,14 @@ def get_table_structure(table_name):
     describe_table = f'DESCRIBE f1_db.{table_name}'
     cursor.execute(describe_table)
     structureFormat = cursor.fetchall()
+    end_array = []
     print(f'Structure for {table_name} table:')
     for i in structureFormat:
-        print(f'column name: {i[0]} ({i[1]})')
+        # print(f'column name: {i[0]} ({i[1]})')
+        end_array.append(f'{i[0]} ({i[1]}): ')
+    return end_array
+
+# get_table_structure('driver')
 
 # used for insert fuctionality
 def get_table_structure_for_insert(table_name):
@@ -90,7 +95,7 @@ def user_table_selection():
     elif(user_input == 5):
         table_name = "season"
     elif(user_input == 6):
-        table_name = "driver"
+        table_name = "team"
     elif (user_input > 1 or user_input < 6):
         print("table doesnt exist")
     print(f'You chose *{table_name}*')
@@ -113,5 +118,19 @@ def read_table_param(table_name):
         print(i)
     print("*"*70)
 
+
+def user_create_loop(table_name):
+    user_finished_create_arr = []
+    for i in get_table_structure(table_name):
+        user_create_input = input(f'{i}')
+        user_finished_create_arr.append(user_create_input)
+    # for i in user_finished_create_arr:
+    #     if (i == 0 or user_finished_create_arr[-1]):
+    #         user_finished_create_arr[i] = int(user_finished_create_arr[i])
+    # have to change the data type of user input to the data type in
+    arr_to_tuple = tuple(user_finished_create_arr)
+    print(arr_to_tuple)
+
+user_create_loop('driver')
 # End helper functions
 
