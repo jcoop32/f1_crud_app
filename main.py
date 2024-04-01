@@ -48,16 +48,17 @@ def menu():
 
 #TODO: need a way to collect data from the user
 def create_data():
-    data = [
-    (23, 'Michael Jordan', 'Australia', datetime.date(1959, 4, 17), 14),
-    (24, 'Patrick Williams', 'Mexico', datetime.date(2002, 10, 9), 2)
-    ]
+    # data = [
+    # (23, 'Michael Jordan', 'Australia', datetime.date(1959, 4, 17), 14),
+    # (24, 'Patrick Williams', 'Mexico', datetime.date(2002, 10, 9), 2)
+    # ]
     table_name = helper_functions.user_table_selection()
+    data = helper_functions.user_create_loop(table_name)
     try:
         insert_statement = f"""INSERT INTO {table_name}
         ({helper_functions.get_table_structure_for_insert(table_name)})
         VALUES ({helper_functions.get_table_s_count(table_name)});"""
-        cursor.executemany(insert_statement, data)
+        cursor.execute(insert_statement, data)
         db_connection.commit()
         print("Record succesfully added")
     except Exception as err:
@@ -88,16 +89,15 @@ def delete_data():
     helper_functions.read_table_param(table_name)
     table_record_count = helper_functions.get_table_record_count(table_name)
     user_selection = int(input("Select ID from record to be deleted (first digit in row): "))
-    if (user_selection > table_record_count or user_selection < 1):
-        print("Record does not exist")
-    else:
-        try:
-            delete_statement = f'DELETE FROM {table_name} WHERE {table_name}_id={user_selection}'
-            cursor.execute(delete_statement)
-            db_connection.commit()
-            print("Record Deleted Successfully")
-        except Exception as err:
-            print(err)
+    try:
+        delete_statement = f'DELETE FROM {table_name} WHERE {table_name}_id={user_selection}'
+        if (user_selection > table_record_count or user_selection < 1):
+            print("Record does not exist")
+        cursor.execute(delete_statement)
+        db_connection.commit()
+        print("Record Deleted Successfully")
+    except Exception as err:
+        print(err)
 
 
 

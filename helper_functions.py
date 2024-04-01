@@ -1,5 +1,6 @@
 import mysql.connector
 import os
+import datetime
 from dotenv import load_dotenv, dotenv_values
 
 load_dotenv()
@@ -123,14 +124,22 @@ def user_create_loop(table_name):
     user_finished_create_arr = []
     for i in get_table_structure(table_name):
         user_create_input = input(f'{i}')
+        if (i == 'driver_id (int): ' or i == 'team_id (int): ' or i == 'circuit_id (int): '
+            or i == 'race_id (int): ' or i == 'season_id (int): ' or i == 'result_id (int): ' or i == 'year (int): '):
+            user_create_input = int(user_create_input)
+        if (i == 'birth_date (date): ' or i == 'date (date): '):
+            user_create_input = None
         user_finished_create_arr.append(user_create_input)
     # for i in user_finished_create_arr:
     #     if (i == 0 or user_finished_create_arr[-1]):
     #         user_finished_create_arr[i] = int(user_finished_create_arr[i])
     # have to change the data type of user input to the data type in
     arr_to_tuple = tuple(user_finished_create_arr)
-    print(arr_to_tuple)
+    # for i in arr_to_tuple:
+    #     if (i == 0 or arr_to_tuple[-1]):
+    #         arr_to_tuple[i] = int(arr_to_tuple[i])
+    return arr_to_tuple
 
-user_create_loop('driver')
+# user_create_loop('driver')
 # End helper functions
 
