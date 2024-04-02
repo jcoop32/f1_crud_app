@@ -46,7 +46,7 @@ def menu():
 # db_connection.close()
 
 
-#TODO: need a way to collect data from the user
+#completed
 def create_data():
     # data = [
     # (23, 'Michael Jordan', 'Australia', datetime.date(1959, 4, 17), 14),
@@ -76,12 +76,21 @@ def read_data():
     print("*"*70)
 
 #TODO: figure out a way to understand which attributes a user wants to update
+    # need too fix the data types for the set
 def update_data():
     table_name = helper_functions.user_table_selection()
     print("Here is the table you have chosen to update:")
-    read_data(table_name)
-
-    print(f"UPDATE {table_name} SET ")
+    helper_functions.read_table_param(table_name)
+    record_id = int(input(f"Which record ({table_name}_id) would you like to change?: "))
+    helper_functions.get_table_structure(table_name)
+    new_data = helper_functions.user_update_loop(table_name, record_id)
+    # print(f"UPDATE {table_name} SET {new_data} WHERE {table_name}_id={record_id}")
+    try:
+        update_data = f"UPDATE {table_name} SET {new_data} WHERE {table_name}_id={record_id}"
+        cursor.execute(update_data)
+        db_connection.commit()
+    except Exception as err:
+        print(err)
 
 # this is complete
 def delete_data():
