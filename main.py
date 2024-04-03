@@ -17,12 +17,13 @@ cursor = db_connection.cursor()
 
 # menu interface for user
 def menu():
-    userChoice = input('Command: (c)reate, (r)ead, (u)pdate, (d)elete, e(x)it: ')
+    userChoice = input('Command: (c)reate, (r)ead, (u)pdate (limited features), (d)elete, e(x)it: ')
     if (userChoice == 'c'):
         create_data()
     elif (userChoice == 'r'):
         read_data()
     elif (userChoice == 'u'):
+        print('\n\n*****THIS FEATURE ONLY WORKS FOR "DRIVER" TABLE!*****\n\n')
         update_data()
     elif (userChoice == 'd'):
         delete_data()
@@ -53,6 +54,7 @@ def create_data():
     # (24, 'Patrick Williams', 'Mexico', datetime.date(2002, 10, 9), 2)
     # ]
     table_name = helper_functions.user_table_selection()
+    helper_functions.read_table_param(table_name)
     data = helper_functions.user_create_loop(table_name)
     try:
         insert_statement = f"""INSERT INTO {table_name}
@@ -70,13 +72,15 @@ def read_data():
     read_table = f'SELECT * FROM {table_name}'
     cursor.execute(read_table)
     table_data = cursor.fetchall()
-    print(f'{table_name} table:')
+    print(f'{table_name} table ({helper_functions.get_table_record_count(table_name)} items):')
+    print(f'({helper_functions.get_table_structure(table_name)})')
     for i in table_data:
         print(i)
     print("*"*70)
 
 #TODO: figure out a way to understand which attributes a user wants to update
     # need too fix the data types for the set
+# Hard coded for driver table
 def update_data():
     table_name = helper_functions.user_table_selection()
     print("Here is the table you have chosen to update:")
@@ -86,9 +90,10 @@ def update_data():
     new_data = helper_functions.user_update_loop(table_name, record_id)
     # print(f"UPDATE {table_name} SET {new_data} WHERE {table_name}_id={record_id}")
     try:
-        update_data = f"UPDATE {table_name} SET {new_data} WHERE {table_name}_id={record_id}"
-        cursor.execute(update_data)
+        update_data = f'UPDATE {table_name} SET driver_id=%s, name=%s, nationality=%s, birth_date=%s, team_id=%s WHERE {table_name}_id={record_id}'
+        cursor.execute(update_data, new_data)
         db_connection.commit()
+        print(f"Succesfully Updated record id {record_id}")
     except Exception as err:
         print(err)
 

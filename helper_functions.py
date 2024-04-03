@@ -12,6 +12,27 @@ db_connection = mysql.connector.connect(host="localhost", user="root", password=
 cursor = db_connection.cursor()
 # Helper Functions
 
+# function for users to select a table (used for each CRUD operation)
+def user_table_selection():
+    show_all_tables()
+    user_input = int(input("Enter table to read/modify from: "))
+    if (user_input == 1):
+        table_name = "circuit"
+    elif(user_input == 2):
+        table_name = "driver"
+    elif(user_input == 3):
+        table_name = "race"
+    elif(user_input == 4):
+        table_name = "result"
+    elif(user_input == 5):
+        table_name = "season"
+    elif(user_input == 6):
+        table_name = "team"
+    elif (user_input > 1 or user_input < 6):
+        print("table doesnt exist")
+    print(f'You chose *{table_name}*')
+    return table_name
+
 # shows the different coloumns for table in param
 def get_table_structure(table_name):
     # use decribe statement to retrieve structure
@@ -25,7 +46,6 @@ def get_table_structure(table_name):
         end_array.append(f'{i[0]} ({i[1]}): ')
     return end_array
 
-# get_table_structure('driver')
 
 # used for insert fuctionality
 def get_table_structure_for_insert(table_name):
@@ -75,32 +95,12 @@ def show_all_tables():
     cursor.execute("SHOW TABLES")
     tables = cursor.fetchall()
     total = 0
-    tables_list = {}
+    # tables_list = {}
     # print("Tables Avaliable:")
     for i in tables:
         total += 1
         print(f'{total}: {i[0]}')
 
-# function for users to select a table (used for each CRUD operation)
-def user_table_selection():
-    show_all_tables()
-    user_input = int(input("Enter table to read/modify from: "))
-    if (user_input == 1):
-        table_name = "circuit"
-    elif(user_input == 2):
-        table_name = "driver"
-    elif(user_input == 3):
-        table_name = "race"
-    elif(user_input == 4):
-        table_name = "result"
-    elif(user_input == 5):
-        table_name = "season"
-    elif(user_input == 6):
-        table_name = "team"
-    elif (user_input > 1 or user_input < 6):
-        print("table doesnt exist")
-    print(f'You chose *{table_name}*')
-    return table_name
 
 # get table count to make sure user is in range for CRUD ops
 def get_table_record_count(table_name):
@@ -130,15 +130,11 @@ def user_create_loop(table_name):
         if (i == 'birth_date (date): ' or i == 'date (date): '):
             user_create_input = None
         user_finished_create_arr.append(user_create_input)
-    # for i in user_finished_create_arr:
-    #     if (i == 0 or user_finished_create_arr[-1]):
-    #         user_finished_create_arr[i] = int(user_finished_create_arr[i])
     # have to change the data type of user input to the data type in
+    # changes arr to tuple for mysql insert format
     arr_to_tuple = tuple(user_finished_create_arr)
-    # for i in arr_to_tuple:
-    #     if (i == 0 or arr_to_tuple[-1]):
-    #         arr_to_tuple[i] = int(arr_to_tuple[i])
     return arr_to_tuple
+
 
 def user_update_loop(table_name, record_id):
     user_finished_create_arr = []
@@ -146,26 +142,14 @@ def user_update_loop(table_name, record_id):
         user_create_input = input(f'{i}')
         if (i == f'{table_name}_id (int): '):
             user_create_input = record_id
-
-        elif (i == 'driver_id (int): ' or i == 'team_id (int): ' or i == 'circuit_id (int): '
-            or i == 'race_id (int): ' or i == 'season_id (int): ' or i == 'result_id (int): ' or i == 'year (int): '):
+        if (i == 'team_id (int): '):
             user_create_input = int(user_create_input)
-
-        if (i == 'birth_date (date): ' or i == 'date (date): '):
+        if (i == 'birth_date (date): '):
             user_create_input = None
-        user_finished_create_arr.append((f'{i.split(" ", 1)[0]}= {user_create_input}'))
-    # for i in user_finished_create_arr:
-    #     if (i == 0 or user_finished_create_arr[-1]):
-    #         user_finished_create_arr[i] = int(user_finished_create_arr[i])
+        user_finished_create_arr.append(user_create_input)
     # have to change the data type of user input to the data type in
     arr_to_tuple = tuple(user_finished_create_arr)
-    # for i in arr_to_tuple:
-    #     if (i == 0 or arr_to_tuple[-1]):
-    #         arr_to_tuple[i] = int(arr_to_tuple[i])
-    return (arr_to_tuple)
+    return arr_to_tuple
 
-# user_update_loop('driver', 81)
-
-# user_create_loop('driver')
 # End helper functions
 
