@@ -17,13 +17,12 @@ cursor = db_connection.cursor()
 
 # menu interface for user
 def menu():
-    userChoice = input('Command: (c)reate, (r)ead, (u)pdate (limited features), (d)elete, e(x)it: ')
+    userChoice = input('Command: (c)reate, (r)ead, (u)pdate, (d)elete, e(x)it: ')
     if (userChoice == 'c'):
         create_data()
     elif (userChoice == 'r'):
         read_data()
     elif (userChoice == 'u'):
-        print('\n\n*****THIS FEATURE ONLY WORKS FOR "DRIVER" TABLE!*****\n\n')
         update_data()
     elif (userChoice == 'd'):
         delete_data()
@@ -78,9 +77,7 @@ def read_data():
         print(i)
     print("*"*70)
 
-#TODO: figure out a way to understand which attributes a user wants to update
-    # need too fix the data types for the set
-# Hard coded for driver table
+# completed
 def update_data():
     table_name = helper_functions.user_table_selection()
     print("Here is the table you have chosen to update:")
@@ -90,7 +87,7 @@ def update_data():
     new_data = helper_functions.user_update_loop(table_name, record_id)
     # print(f"UPDATE {table_name} SET {new_data} WHERE {table_name}_id={record_id}")
     try:
-        update_data = f'UPDATE {table_name} SET driver_id=%s, name=%s, nationality=%s, birth_date=%s, team_id=%s WHERE {table_name}_id={record_id}'
+        update_data = helper_functions.update_table_structure_selector(table_name, record_id)
         cursor.execute(update_data, new_data)
         db_connection.commit()
         print(f"Succesfully Updated record id {record_id}")

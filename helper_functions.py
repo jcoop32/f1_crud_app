@@ -151,5 +151,24 @@ def user_update_loop(table_name, record_id):
     arr_to_tuple = tuple(user_finished_create_arr)
     return arr_to_tuple
 
+# changes update statement for selected table
+def update_table_structure_selector(table_name, record_id):
+    update_statement = ''
+    if (table_name == "circuit"):
+        update_statement = f'UPDATE {table_name} SET {table_name}_id=%s, name=%s, location=%s, length=%s WHERE {table_name}_id={record_id}'
+    elif(table_name == "driver"):
+        update_statement = f'UPDATE {table_name} SET {table_name}_id=%s, name=%s, nationality=%s, birth_date=%s, team_id=%s WHERE {table_name}_id={record_id}'
+    elif(table_name == "race"):
+        update_statement = f'UPDATE {table_name} SET {table_name}_id=%s, date=%s, location=%s, circuit_id=%s WHERE {table_name}_id={record_id}'
+    elif(table_name == "result"):
+        update_statement = f'UPDATE {table_name} SET {table_name}_id=%s, driver_id=%s, race_id=%s, season_id=%s, position=%s, points=%s WHERE {table_name}_id={record_id}'
+    elif(table_name == "season"):
+        update_statement = f'UPDATE {table_name} SET {table_name}_id=%s, year=%s WHERE {table_name}_id={record_id}'
+    elif(table_name == "team"):
+        update_statement = f'UPDATE {table_name} SET {table_name}_id=%s, name=%s, country=%s, constructor=%s WHERE {table_name}_id={record_id}'
+
+    return update_statement
+
+
 # End helper functions
 
