@@ -46,6 +46,17 @@ def get_table_structure(table_name):
         end_array.append(f'{i[0]} ({i[1]}): ')
     return end_array
 
+def get_column_names(table_name):
+    # use decribe statement to retrieve structure
+    describe_table = f'DESCRIBE f1_db.{table_name}'
+    cursor.execute(describe_table)
+    structureFormat = cursor.fetchall()
+    end_array = []
+    for i in structureFormat:
+        # print(f'column name: {i[0]} ({i[1]})')
+        end_array.append(i[0])
+    return end_array
+
 
 # used for insert fuctionality
 def get_table_structure_for_insert(table_name):
@@ -63,7 +74,7 @@ def get_table_structure_for_insert(table_name):
         else:
             # print()
             end_string += f'{structureFormat[i][0]}'
-    return end_string
+    print(end_string)
 
 # used for insert functionality
 def get_table_column_count(table_name):
@@ -169,6 +180,37 @@ def update_table_structure_selector(table_name, record_id):
 
     return update_statement
 
+
+# get_column_names("driver")
+
+# returns simple preset select statements
+def preset_read_options(table_name):
+    column_names = get_column_names(table_name)
+    preset_statements = []
+    selecting = True
+    for i in range(get_table_column_count(table_name)):
+        for j in column_names:
+            statement =  f'SELECT {j} FROM {table_name}'
+            preset_statements.append(statement)
+        print(f'[{i+1}]: {preset_statements[i]}')
+    while (selecting):
+        user_selection = int(input("Which preset select statement would you like to use?: "))
+        if (user_selection > get_table_column_count(table_name) or user_selection < 1):
+            print("Selection out of range!")
+        else:
+            selecting = False
+            return preset_statements[user_selection-1]
+
+# decides if user wants to use a preset or default select statement
+def read_table_statement(table_name):
+    default_statement = f'SELECT * FROM {table_name}'
+    ask_user_to_use_preset = input("Would you like to use a preset statement? (y/n):")
+    if (ask_user_to_use_preset == "y"):
+        return preset_read_options(table_name)
+    else:
+        return default_statement
+
+# preset_read_options("circuit")
 
 # End helper functions
 

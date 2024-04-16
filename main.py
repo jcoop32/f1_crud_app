@@ -68,8 +68,8 @@ def create_data():
 # this is complete
 def read_data():
     table_name = helper_functions.user_table_selection()
-    read_table = f'SELECT * FROM {table_name}'
-    cursor.execute(read_table)
+    read_table_statement = helper_functions.read_table_statement(table_name)
+    cursor.execute(read_table_statement)
     table_data = cursor.fetchall()
     print(f'{table_name} table ({helper_functions.get_table_record_count(table_name)} items):')
     print(f'({helper_functions.get_table_structure(table_name)})')
