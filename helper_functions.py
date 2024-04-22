@@ -210,6 +210,69 @@ def read_table_statement(table_name):
     else:
         return default_statement
 
+
+def read_two_tables(t1, t2):
+    read = f'SELECT {t1}_id, name, {t2}_id FROM {t1} UNION SELECT {t2}_id, name, country FROM {t2};'
+    cursor.execute(read)
+    table_data = cursor.fetchall()
+    for i in table_data:
+        print(i)
+
+def foreignDrivers():
+    query = """
+    WITH ForeignDrivers AS (
+        SELECT team.team_id, team.name, driver.driver_id
+        FROM team
+        JOIN driver ON team.team_id = driver.team_id
+        WHERE team.country <> driver.nationality
+)
+    SELECT name AS 'Team Name', COUNT(driver_id) AS 'Foreign Drivers'
+    FROM ForeignDrivers
+    GROUP BY team_id, name
+    ORDER BY 'Foreign Drivers' DESC;
+    """
+    try:
+        cursor.execute(query)
+        results = cursor.fetchall()
+        if results:
+            print(f"{'Team Name':<30} {'Foreign Drivers':<15}")
+            print("-" * 45)
+            for team_name, count in results:
+                print(f"{team_name:<30} {count:<15}")
+        else:
+            print("No data found on teams with foreign drivers.")
+        print("" * 70)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+
+
+def driverTeamAndNationality():
+    query = """
+    SELECT driver.name AS 'Driver Name', driver.nationality, team.name AS 'Team Name'
+    FROM driver
+    JOIN team ON driver.team_id = team.team_id
+    ORDER BY team.name, driver.name;
+    """
+    try:
+        cursor.execute(query)
+        results = cursor.fetchall()
+        print("Driver Name | Nationality | Team Name")
+        print("-" * 40)
+        for driver_name, nationality, team_name in results:
+            print(f"{driver_name} | {nationality} | {team_name}")
+        print("" * 70)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+
+
+
+# read_two_tables("driver",  "team")
+
+
 # preset_read_options("circuit")
 
 # End helper functions

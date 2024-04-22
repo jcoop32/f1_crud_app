@@ -48,10 +48,6 @@ def menu():
 
 #completed
 def create_data():
-    # data = [
-    # (23, 'Michael Jordan', 'Australia', datetime.date(1959, 4, 17), 14),
-    # (24, 'Patrick Williams', 'Mexico', datetime.date(2002, 10, 9), 2)
-    # ]
     table_name = helper_functions.user_table_selection()
     helper_functions.read_table_param(table_name)
     data = helper_functions.user_create_loop(table_name)
