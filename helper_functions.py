@@ -246,8 +246,6 @@ def foreignDrivers():
         print(f"An error occurred: {e}")
 
 
-
-
 def driverTeamAndNationality():
     query = """
     SELECT driver.name AS 'Driver Name', driver.nationality, team.name AS 'Team Name'

@@ -1,5 +1,4 @@
 import mysql.connector
-import datetime
 import helper_functions
 import os
 from dotenv import load_dotenv, dotenv_values
@@ -17,7 +16,7 @@ cursor = db_connection.cursor()
 
 # menu interface for user
 def menu():
-    userChoice = input('Command: (c)reate, (r)ead, (u)pdate, (d)elete, e(x)it: ')
+    userChoice = input('Command: (c)reate, (r)ead, (u)pdate, (d)elete, (a)dvanced reads, e(x)it: ')
     if (userChoice == 'c'):
         create_data()
     elif (userChoice == 'r'):
@@ -26,6 +25,8 @@ def menu():
         update_data()
     elif (userChoice == 'd'):
         delete_data()
+    elif (userChoice == 'a'):
+        advanced_reads()
     elif (userChoice == 'x'):
         print('User quit')
         db_connection.close()
@@ -106,6 +107,17 @@ def delete_data():
     except Exception as err:
         print(err)
 
+
+def advanced_reads():
+    print("1: Foreign Drivers read")
+    print("2: Driver team and Nationality")
+    user_input = int(input("Which read would you like to perform?: "))
+    if (user_input == 1):
+        return helper_functions.foreignDrivers()
+    elif (user_input == 2):
+        return helper_functions.driverTeamAndNationality()
+    else:
+        print("Input out of range")
 
 
 # ******** function tests ***********
