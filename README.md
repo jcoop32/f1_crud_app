@@ -1,5 +1,11 @@
 # F1 CRUD
 
+## Run Through of Program
+
+[![Basic CRUD Operations](./preview.png)](./cs425_f1_crud_basic.webm)
+
+[![Advanced Functions](./preview2.png)](./cs425_f1_crud_advanced_reads.webm)
+
 ## Instructions to run
 
 ### Installing Dependencies

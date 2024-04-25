@@ -110,7 +110,7 @@ def delete_data():
 
 def advanced_reads():
     print("1: Foreign Drivers read")
-    print("2: Driver team and Nationality")
+    print("2: Driver Team and Nationality read")
     user_input = int(input("Which read would you like to perform?: "))
     if (user_input == 1):
         return helper_functions.foreignDrivers()
