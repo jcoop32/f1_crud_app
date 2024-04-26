@@ -16,7 +16,7 @@ cursor = db_connection.cursor()
 
 # menu interface for user
 def menu():
-    userChoice = input('Command: (c)reate, (r)ead, (u)pdate, (d)elete, (a)dvanced reads, e(x)it: ')
+    userChoice = input('Command: (c)reate, (r)ead, (u)pdate, (d)elete, (a)dvanced queries, e(x)it: ')
     if (userChoice == 'c'):
         create_data()
     elif (userChoice == 'r'):
@@ -26,7 +26,7 @@ def menu():
     elif (userChoice == 'd'):
         delete_data()
     elif (userChoice == 'a'):
-        advanced_reads()
+        advanced_queries()
     elif (userChoice == 'x'):
         print('User quit')
         db_connection.close()
@@ -108,10 +108,10 @@ def delete_data():
         print(err)
 
 
-def advanced_reads():
-    print("1: Foreign Drivers read")
-    print("2: Driver Team and Nationality read")
-    user_input = int(input("Which read would you like to perform?: "))
+def advanced_queries():
+    print("1: Foreign Drivers query")
+    print("2: Driver Team and Nationality query")
+    user_input = int(input("Which query would you like to perform?: "))
     if (user_input == 1):
         return helper_functions.foreignDrivers()
     elif (user_input == 2):

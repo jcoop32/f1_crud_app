@@ -74,7 +74,7 @@ def get_table_structure_for_insert(table_name):
         else:
             # print()
             end_string += f'{structureFormat[i][0]}'
-    print(end_string)
+    return end_string
 
 # used for insert functionality
 def get_table_column_count(table_name):
@@ -139,7 +139,7 @@ def user_create_loop(table_name):
             or i == 'race_id (int): ' or i == 'season_id (int): ' or i == 'result_id (int): ' or i == 'year (int): '):
             user_create_input = int(user_create_input)
         if (i == 'birth_date (date): ' or i == 'date (date): '):
-            user_create_input = None
+            user_create_input = datetime.date(2002, 7, 1)
         user_finished_create_arr.append(user_create_input)
     # have to change the data type of user input to the data type in
     # changes arr to tuple for mysql insert format
@@ -156,7 +156,7 @@ def user_update_loop(table_name, record_id):
         if (i == 'team_id (int): '):
             user_create_input = int(user_create_input)
         if (i == 'birth_date (date): '):
-            user_create_input = None
+            user_create_input = datetime.date(2002, 7, 1)
         user_finished_create_arr.append(user_create_input)
     # have to change the data type of user input to the data type in
     arr_to_tuple = tuple(user_finished_create_arr)
