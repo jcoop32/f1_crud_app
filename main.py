@@ -46,7 +46,6 @@ def menu():
 # cursor.close()
 # db_connection.close()
 
-
 #completed
 def create_data():
     table_name = helper_functions.user_table_selection()
@@ -111,11 +110,17 @@ def delete_data():
 def advanced_queries():
     print("1: Foreign Drivers query")
     print("2: Driver Team and Nationality query")
+    print("3: Calculate the percent rank of the drivers by points")
+    print("4: Find the quartile of the circuits based on lengths")
     user_input = int(input("Which query would you like to perform?: "))
     if (user_input == 1):
         return helper_functions.foreignDrivers()
     elif (user_input == 2):
         return helper_functions.driverTeamAndNationality()
+    elif (user_input == 3):
+        return helper_functions.list_driver_percent_ranks()
+    elif (user_input == 4):
+        return helper_functions.list_circuit_quartiles()
     else:
         print("Input out of range")
 

@@ -265,8 +265,38 @@ def driverTeamAndNationality():
         print(f"An error occurred: {e}")
 
 
+def list_driver_percent_ranks():
+    query = """
+    Select driver.driver_id, name, points, Round(percent_rank() Over(order by points), 2)
+    as 'point_percent_rank'
+    from driver left join result on driver.driver_id=result.driver_id;
+    """
+    try:
+        cursor.execute(query)
+        results = cursor.fetchall()
+        print("Driver ID | Name | Points | Percent Rank")
+        print("-" * 60)  # Adjust the number of dashes based on your actual output width
+        for driver_id, name, points, percent_rank in results:
+            print(f"{driver_id} | {name} | {points} | {percent_rank}")
+        print("" * 70)  # Ending line for formatting
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-
+def list_circuit_quartiles():
+    query = """
+    SELECT name, length, NTILE(4) OVER (ORDER BY length) AS 's_ntile(4)'
+    FROM circuit;
+    """
+    try:
+        cursor.execute(query)
+        results = cursor.fetchall()
+        print("Team name| Length  | s_ntile(4)")
+        print("-" * 50)  # Adjust the number of dashes based on your output format
+        for name, length, quartile in results:
+            print(f"{name} | {length}  |  {quartile}")
+        print("" * 70)  # Ending line for formatting
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 # read_two_tables("driver",  "team")
 
